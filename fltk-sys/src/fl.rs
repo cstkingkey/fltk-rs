@@ -281,6 +281,9 @@ extern "C" {
     pub fn Fl_next_window(arg1: *const ::std::os::raw::c_void) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
+    pub fn Fl_modal() -> *mut ::std::os::raw::c_void;
+}
+extern "C" {
     pub fn Fl_should_program_quit() -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -451,6 +454,8 @@ extern "C" {
         x: ::std::os::raw::c_int,
         y: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn Fl_screen_num_inside(
         x: ::std::os::raw::c_int,
         y: ::std::os::raw::c_int,
@@ -466,6 +471,8 @@ extern "C" {
         H: *mut ::std::os::raw::c_int,
         n: ::std::os::raw::c_int,
     );
+}
+extern "C" {
     pub fn Fl_screen_xywh_at(
         X: *mut ::std::os::raw::c_int,
         Y: *mut ::std::os::raw::c_int,
@@ -474,6 +481,8 @@ extern "C" {
         mx: ::std::os::raw::c_int,
         my: ::std::os::raw::c_int,
     );
+}
+extern "C" {
     pub fn Fl_screen_xywh_inside(
         X: *mut ::std::os::raw::c_int,
         Y: *mut ::std::os::raw::c_int,
@@ -484,6 +493,8 @@ extern "C" {
         mw: ::std::os::raw::c_int,
         mh: ::std::os::raw::c_int,
     );
+}
+extern "C" {
     pub fn Fl_screen_xywh_mouse(
         X: *mut ::std::os::raw::c_int,
         Y: *mut ::std::os::raw::c_int,
@@ -502,12 +513,8 @@ extern "C" {
         H: *mut ::std::os::raw::c_int,
         n: ::std::os::raw::c_int,
     );
-    pub fn Fl_screen_work_area_mouse(
-        X: *mut ::std::os::raw::c_int,
-        Y: *mut ::std::os::raw::c_int,
-        W: *mut ::std::os::raw::c_int,
-        H: *mut ::std::os::raw::c_int,
-    );
+}
+extern "C" {
     pub fn Fl_screen_work_area_at(
         X: *mut ::std::os::raw::c_int,
         Y: *mut ::std::os::raw::c_int,
@@ -515,6 +522,14 @@ extern "C" {
         H: *mut ::std::os::raw::c_int,
         mx: ::std::os::raw::c_int,
         my: ::std::os::raw::c_int,
+    );
+}
+extern "C" {
+    pub fn Fl_screen_work_area_mouse(
+        X: *mut ::std::os::raw::c_int,
+        Y: *mut ::std::os::raw::c_int,
+        W: *mut ::std::os::raw::c_int,
+        H: *mut ::std::os::raw::c_int,
     );
 }
 extern "C" {
@@ -662,5 +677,10 @@ extern "C" {
         cb: ::std::option::Option<
             unsafe extern "C" fn(source: ::std::os::raw::c_int, data: *mut ::std::os::raw::c_void),
         >,
+    );
+}
+extern "C" {
+    pub fn Fl_open_callback(
+        cb: ::std::option::Option<unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char)>,
     );
 }

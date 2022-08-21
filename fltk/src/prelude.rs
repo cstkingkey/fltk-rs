@@ -767,6 +767,10 @@ pub unsafe trait WindowExt: GroupExt {
     fn is_override(&self) -> bool;
     /// Forces the position of the window
     fn force_position(&mut self, flag: bool);
+    /// Set the icon label
+    fn set_icon_label(&mut self, label: &str);
+    /// Get the icon label
+    fn icon_label(&self) -> Option<String>;
 }
 
 /// Defines the methods implemented by all input and output widgets.
@@ -1308,6 +1312,8 @@ pub unsafe trait BrowserExt: WidgetExt {
     /// # Safety
     /// Type correctness is insured by the developer
     unsafe fn data<T: Clone + 'static>(&self, line: i32) -> Option<T>;
+    /// Hides a the specified line
+    fn hide_line(&mut self, line: i32);
 }
 
 /// Defines the methods implemented by table types.

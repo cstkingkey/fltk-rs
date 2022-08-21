@@ -1,6 +1,46 @@
 # Changelog
 
 
+## [1.3.14] - Unreleased
+- impl std::default::Default for TextBuffer by @ConsoleC137.
+- Avoid calling git submodule update in build script.
+- Make ttf-parser an optional dependency.
+- Update FLTK.
+
+## [1.3.13] - 2022-08-09
+- Add BrowserExt::hide_line().
+- Replace lazy_static with once_cell.
+- Remove assert from Offscreen::is_valid().
+- Pull FLTK fixes.
+
+## [1.3.12] - 2022-07-26
+- Explicitly check darwin arch in fltk-sys' build script.
+- Add index check with GroupExt::insert
+- Pull upstream FLTK fixes.
+
+## [1.3.11] - 2022-07-10
+- Add WindowType::Single as alias to WindowType::Normal.
+- Add Window::set_on_top() which modifies the Window's level on macOS platforms to be NSMainMenuWindowLevel + 2.
+- Fix Flex::recalc to not change the current group.
+- Expose Group::set_current.
+- Pull FLTK fixes.
+
+## [1.3.10] - 2022-07-01
+- Fix Flex::clear.
+- Fix build using musl on Alpine Linux. 
+- Add app::modal().
+- Revert change where app::channel::recv() requires Clone.
+- Pull FLTK fixes.
+
+## [1.3.9] - 2022-06-23
+- Pull FLTK fixes.
+- Fix opacity issue on wayland.
+
+## [1.3.8] - 2022-06-06
+- Add app::raw_open_callback.
+- Add WindowExt::icon_label and set_icon_label.
+- Pull fixes from FLTK.
+
 ## [1.3.7] - 2022-05-19
 - Add app::GlobalState.
 - Add DisplayExt::show_insert_position by @degaart

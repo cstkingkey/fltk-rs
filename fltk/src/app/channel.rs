@@ -1,14 +1,13 @@
 use fltk_sys::fl;
 use std::marker;
 use std::any::Any;
+use once_cell::sync::Lazy;
 
 type Chan = (crossbeam_channel::Sender<Box<dyn Any + Send + Sync>>, crossbeam_channel::Receiver<Box<dyn Any + Send + Sync>>);
 
-lazy_static::lazy_static! {
-    static ref CHANNEL: Chan = crossbeam_channel::unbounded();
-    static ref SENDER: crossbeam_channel::Sender<Box<dyn Any + Send + Sync>> = CHANNEL.clone().0;
-    static ref RECEIVER: crossbeam_channel::Receiver<Box<dyn Any + Send + Sync>> = CHANNEL.clone().1;
-}
+static CHANNEL: Lazy<Chan> = Lazy::new(|| crossbeam_channel::unbounded());
+static SENDER: Lazy<crossbeam_channel::Sender<Box<dyn Any + Send + Sync>>> = Lazy::new(|| CHANNEL.clone().0);
+static RECEIVER: Lazy<crossbeam_channel::Receiver<Box<dyn Any + Send + Sync>>> = Lazy::new(|| CHANNEL.clone().1);
 
 #[doc(hidden)]
 /// Sends a custom message
@@ -61,6 +60,7 @@ impl<T: 'static + Send + Sync> Sender<T> {
     /// Sends a message
     pub fn send(&self, val: T) {
         SENDER.try_send(Box::new(val)).ok();
+        crate::app::awake();
     }
     /// Get the global sender
     pub fn get() -> Self {
@@ -88,12 +88,15 @@ impl<T: Send + Sync> Clone for Receiver<T> {
     }
 }
 
-impl<T: 'static + Send + Sync + Clone> Receiver<T> {
+impl<T: 'static + Send + Sync> Receiver<T> {
     /// Receives a message
     pub fn recv(&self) -> Option<T> {
-        // if let Some(r) = &*RECEIVER {
         if let Ok(msg) = RECEIVER.try_recv() {
-            msg.downcast_ref::<T>().map(|message| (*message).clone())
+            if let Ok(t) = (msg as Box<dyn Any + 'static>).downcast::<T>() {
+                Some(*t)
+            } else {
+                None
+            }
         } else {
             None
         }
