@@ -12,6 +12,7 @@ The fltk crate is a cross-platform lightweight gui library which can be statical
 
 Resources:
 - [Book](https://fltk-rs.github.io/fltk-book/)
+- [本書的中文翻譯](https://flatig.vip/fltk-book-zh)
 - [Documentation](https://docs.rs/fltk)
 - [Videos](https://github.com/fltk-rs/fltk-rs#tutorials)
 - [Discussions](https://github.com/fltk-rs/fltk-rs/discussions)
@@ -50,7 +51,7 @@ To use the latest changes in the repo:
 fltk = { version = "^1.3", git = "https://github.com/fltk-rs/fltk-rs" }
 ```
 
-To use the bundled libs (available for x64 windows (msvc & gnu (msys2-mingw)), x64 linux & macos):
+To use the bundled libs (available for x64 windows (msvc & gnu (msys2-mingw)), x64 & aarch64 linux & macos):
 ```toml
 [dependencies]
 fltk = { version = "^1.3", features = ["fltk-bundled"] }
@@ -217,7 +218,7 @@ For default application colors, fltk-rs provides `app::background()`, `app::back
 
 ## Dependencies
 
-Rust (version > 1.45), CMake (version > 3.11), Git and a C++11 compiler need to be installed and in your PATH for a cross-platform build from source. [Ninja](https://github.com/ninja-build/ninja) is recommended, but not required. This crate also offers a bundled form of fltk on selected x86_64 platforms (Windows (msvc and gnu), MacOS, Linux), this can be enabled using the fltk-bundled feature flag as mentioned in the usage section (this requires curl and tar to download and unpack the bundled libraries).
+Rust (version > 1.45), CMake (version > 3.11), Git and a C++11 compiler need to be installed and in your PATH for a cross-platform build from source. [Ninja](https://github.com/ninja-build/ninja) is recommended, but not required. This crate also offers a bundled form of fltk on selected x86_64 and aarch64 platforms (Windows (msvc and gnu), MacOS, Linux), this can be enabled using the fltk-bundled feature flag as mentioned in the usage section (this requires curl and tar to download and unpack the bundled libraries).
 
 - Windows: 
     - MSVC: Windows SDK
@@ -256,7 +257,7 @@ The following are the features offered by the crate:
 - system-libpng: Uses the system libpng
 - system-libjpeg: Uses the system libjpeg
 - system-zlib: Uses the system zlib
-- use-wayland: Uses FLTK's wayland backend. Requires libwayland-dev, wayland-protocols, libdbus-1-dev, libxkbcommon-dev, libgtk-3-dev (optional, for the GTK-style titlebar), in place of the X11 development packages. Sample [CI](https://github.com/MoAlyousef/test_wayland/blob/main/.github/workflows/rust.yml).
+- use-wayland: Uses FLTK's wayland hybrid backend (runs on wayland when present, and on X11 when not present). Requires libwayland-dev, wayland-protocols, libdbus-1-dev, libxkbcommon-dev, libgtk-3-dev (optional, for the GTK-style titlebar), in addition to the X11 development packages. Sample [CI](https://github.com/MoAlyousef/test_wayland/blob/main/.github/workflows/rust.yml).
 
 ## FAQ
 

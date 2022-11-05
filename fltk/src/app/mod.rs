@@ -1,8 +1,6 @@
 use crate::enums::Mode;
 use crate::prelude::*;
-use std::{
-    path,
-};
+use std::path;
 
 mod channel;
 pub use channel::*;
@@ -74,6 +72,7 @@ impl App {
 
     /**
         Loads a font from a path.
+        Requires enabling the ttf-parser feature to get a font name back from the method, otherwise you can pass the name directly to `enums::Font::by_name()`.
         On success, returns a String with the ttf Font Family name. The font's index is always 16.
         As such only one font can be loaded at a time.
         The font name can be used with [`Font::by_name`](`crate::enums::Font::by_name`), and index with [`Font::by_index`](`crate::enums::Font::by_index`).

@@ -5,8 +5,8 @@
 ### Why does the build fails when I follow one of the tutorials?
 The first tutorial uses the fltk-bundled feature flag, which is only supported for certain platforms since these are built using the Github Actions CI, namely:
 - Windows 10 x64 (msvc and gnu).
-- MacOS 10.15 x64.
-- Ubuntu 18.04 or later, x64.
+- MacOS 12 x64 and aarch64.
+- Ubuntu 20.04 or later, x64 and aarch64.
 
 If you're not running one of the aforementioned platforms, you'll have to remove the fltk-bundled feature flag in your Cargo.toml file:
 ```toml
@@ -197,6 +197,13 @@ Interfacing with C++ or C code can't be reasoned about by the Rust compiler, so 
 ### Is fltk-rs panic/exception-safe?
 FLTK (C++) doesn't throw exceptions, neither do the C wrapper (cfltk) nor the fltk-sys crate. The higher level fltk crate, which wraps fltk-sys, is not exception-safe since it uses asserts internally after various operations to ensure memory-safety. An example is a widget constructor which checks that the returned pointer (from the C++ side) is not null from allocation failure. It also asserts all widget reads/writes are happening on valid (not deleted) widgets.
 Also any function sending a string across FFI is checked for interal null bytes. For such functions, the developer can perform a sanity check on passed strings to make sure they're valid UTF-8 strings, or check that a widget was not deleted prior to accessing a widget. That said, all functions passed as callbacks to be handled by the C++ side are exception-safe.
+
+### Are there any environment variables which can affect the build or behavior?
+- `CFLTK_TOOLCHAIN=<path>` allows passing the path to a CMake file acting as a CMAKE_TOOLCHAIN_FILE, this allows passing extra info to cmake if needed.
+- `CFLTK_WAYLAND_ONLY=<1 or 0>` allows building for wayland only without directly linking X11 libs nor relying on their headers for the build process. This only works with the `use-wayland` feature flag.
+- `CFLTK_BUNDLE_DIR=<path>` allows passing a path of prebuilt cfltk and fltk static libs, useful for when a customized build of fltk is needed, or for targetting other arches when building with the `fltk-bundled` flag.
+- `CFLTK_BUNDLE_URL=<url>` similar to above but allows passing a url which will directs the build script to download from the passed url.
+- `FLTK_BACKEND=<x11 or wayland>` allows choosing the backend of your hybrid X11/wayland FLTK app. This only works for apps built with `use-wayland` feature flag. 
 
 ## Contributing
 Please refer to the [CONTRIBUTING](https://github.com/fltk-rs/fltk-rs/blob/master/CONTRIBUTING.md) page for further information.

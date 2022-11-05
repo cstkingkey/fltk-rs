@@ -10,7 +10,7 @@ use std::{
 
 /// Defines the text cursor styles supported by fltk
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Cursor {
     /// Normal
     Normal,
@@ -678,7 +678,7 @@ impl Drop for TextBuffer {
 
 /// Defines wrap modes
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum WrapMode {
     /// No wrapping
     None,
@@ -692,7 +692,7 @@ pub enum WrapMode {
 
 /// Defines drag types
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum DragType {
     /// No dragging
     None = -2,
@@ -752,7 +752,7 @@ crate::macros::widget::impl_widget_base!(SimpleTerminal, Fl_Simple_Terminal);
 crate::macros::display::impl_display_ext!(SimpleTerminal, Fl_Simple_Terminal);
 
 /// The attribute of the style entry
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 #[non_exhaustive]
 pub enum TextAttr {
@@ -773,7 +773,7 @@ pub enum TextAttr {
 }
 
 /// Defines the styles used in the `set_highlight_data`, which is used with style buffers
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct StyleTableEntry {
     /// Font color
     pub color: Color,
@@ -783,8 +783,18 @@ pub struct StyleTableEntry {
     pub size: i32,
 }
 
+impl Default for StyleTableEntry {
+    fn default() -> Self {
+        Self {
+            color: Color::Foreground,
+            font: Font::Helvetica,
+            size: crate::app::font_size(),
+        }
+    }
+}
+
 /// Defines the styles used in the `set_highlight_data`, which is used with style buffers
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct StyleTableEntryExt {
     /// Font color
     pub color: Color,
@@ -796,6 +806,18 @@ pub struct StyleTableEntryExt {
     pub attr: TextAttr,
     /// background color
     pub bgcolor: Color,
+}
+
+impl Default for StyleTableEntryExt {
+    fn default() -> Self {
+        Self {
+            color: Color::Foreground,
+            font: Font::Helvetica,
+            size: crate::app::font_size(),
+            attr: TextAttr::None,
+            bgcolor: Color::Background2,
+        }
+    }
 }
 
 impl TextEditor {

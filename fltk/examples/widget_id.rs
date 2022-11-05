@@ -1,10 +1,13 @@
+#![feature(once_cell)]
+
+use std::sync::LazyLock;
 use fltk::{prelude::*, *};
+use std::any::Any;
 use std::collections::HashMap;
 use std::sync::Mutex;
-use std::any::Any;
-use once_cell::sync::Lazy;
 
-static WIDGET_MAP: Lazy<Mutex<HashMap<&'static str, Box<dyn Any + Send + Sync + 'static>>>> = Lazy::new(|| Mutex::new(HashMap::default()));
+static WIDGET_MAP: LazyLock<Mutex<HashMap<&'static str, Box<dyn Any + Send + Sync + 'static>>>> =
+    LazyLock::new(|| Mutex::new(HashMap::default()));
 
 pub trait WidgetId<W>
 where
@@ -108,3 +111,4 @@ fn main() {
 
     app.run().unwrap();
 }
+

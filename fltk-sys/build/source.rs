@@ -6,6 +6,8 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
     println!("cargo:rerun-if-env-changed=CFLTK_TOOLCHAIN");
     println!("cargo:rerun-if-env-changed=PKG_CONFIG_PATH");
     println!("cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR");
+    println!("cargo:rerun-if-env-changed=CFLTK_WAYLAND_ONLY");
+    println!("cargo:rerun-if-env-changed=CFLTK_GENERATE_BUNDLE_DIR");
     println!("cargo:rerun-if-changed=cfltk/CMakeLists.txt");
     println!("cargo:rerun-if-changed=cfltk/include/cfl.h");
     println!("cargo:rerun-if-changed=cfltk/include/cfl_widget.h");
@@ -53,9 +55,6 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
     println!("cargo:rerun-if-changed=cfltk/src/cfl_font.cpp");
     println!("cargo:rerun-if-changed=cfltk/src/cfl_utils.cpp");
     println!("cargo:rerun-if-changed=cfltk/src/cfl_nswindow.m");
-    println!("cargo:rerun-if-changed=cfltk/FL_FLex/FL_Flex.H");
-    println!("cargo:rerun-if-changed=cfltk/FL_FLex/FL_Flex.cpp");
-    println!("cargo:rerun-if-changed=cfltk/src/cfl_vec.hpp");
     println!("cargo:rerun-if-changed=cfltk/fltk.patch");
 
     if target_triple.contains("windows") {
@@ -128,8 +127,12 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
         if target_triple.contains("linux") && !target_triple.contains("android") {
             if cfg!(feature = "no-pango") {
                 dst.define("OPTION_USE_PANGO", "OFF");
+                dst.define("OPTION_USE_CAIRO", "OFF");
+                // dst.define("FLTK_USE_CAIROXLIB", "OFF");
             } else {
                 dst.define("OPTION_USE_PANGO", "ON");
+                dst.define("OPTION_USE_CAIRO", "ON");
+                // dst.define("FLTK_USE_CAIROXLIB", "ON");
             }
         }
 
@@ -146,6 +149,12 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
 
         if cfg!(feature = "use-wayland") {
             dst.define("OPTION_USE_WAYLAND", "ON");
+            dst.define("OPTION_ALLOW_GTK_PLUGIN", "OFF");
+            if let Ok(wayland_only) = std::env::var("CFLTK_WAYLAND_ONLY") {
+                if wayland_only == "1" {
+                    dst.define("OPTION_WAYLAND_ONLY", "ON");
+                }
+            }
         }
 
         if cfg!(feature = "single-threaded") {

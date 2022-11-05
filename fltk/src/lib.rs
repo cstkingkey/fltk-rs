@@ -24,6 +24,7 @@ Why choose FLTK?
 
 Resources:
 - [Book](https://fltk-rs.github.io/fltk-book/)
+- [本書的中文翻譯](https://flatig.vip/fltk-book-zh)
 - [Documentation](https://docs.rs/fltk)
 - [Videos](https://github.com/fltk-rs/fltk-rs#tutorials)
 - [Discussions](https://github.com/fltk-rs/fltk-rs/discussions)
@@ -267,6 +268,7 @@ please check the [FAQ](https://github.com/fltk-rs/fltk-rs/blob/master/FAQ.md) pa
 #![allow(non_upper_case_globals)]
 #![allow(clippy::needless_doctest_main)]
 #![warn(missing_docs)]
+#![allow(clippy::type_complexity)]
 
 /// Application related methods and functions
 pub mod app;

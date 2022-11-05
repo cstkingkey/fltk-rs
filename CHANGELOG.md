@@ -1,11 +1,44 @@
 # Changelog
 
 
-## [1.3.14] - Unreleased
+## [1.3.19] - 2022-11-01
+- Add ColorChooser::set_rgb().
+- Add check in MenuExt::text() for empty menus by @purrie.
+- Add other similar checks for other MenuExt methods.
+- Impl PartialEq, Eq and Default for StyleTableEntry and StyleTableEntryExt.
+- Pull FLTK fixes.
+
+## [1.3.18] - 2022-10-21
+- Fix build on Windows when enabling the raw-window-handle feature.
+
+## [1.3.17] - 2022-10-21
+- Several improvements to the tree example, by @peter-scholtens. 
+- Add support for raw-window-handle version 0.5 under the rwh05 feature flag.
+- Add draw::draw_rbox().
+- Add MenuButton::clear().
+- Update README and FAQ.
+- Pull FLTK fixes.
+
+## [1.3.16] - 2022-10-05
+- Default to drawing with Cairo on Linux/BSD
+- Fix building with both features use-wayland and enable-glwindow while adding widgets to the glwindow.
+- Pull upstream support for adding widgets to GlWindow.
+- Pull upstream fixes.
+- Remove once_cell.
+- Update ttf-parser to version 0.17.
+
+## [1.3.15] - 2022-09-11
+- Revert breaking change with raw-window-handle's update.
+- Support CFLTK_WAYLAND_ONLY env variable which allows building a wayland non-hybrid FLTK app.
+- Fix some clippy lints.
+- Pull FLTK's pure wayland backend.
+
+## [1.3.14] - 2022-09-06
 - impl std::default::Default for TextBuffer by @ConsoleC137.
 - Avoid calling git submodule update in build script.
-- Make ttf-parser an optional dependency.
-- Update FLTK.
+- Update raw-window-handle dep to 0.5.
+- Pull FLTK's hybrid wayland backend.
+- Pull FLTK fixes.
 
 ## [1.3.13] - 2022-08-09
 - Add BrowserExt::hide_line().

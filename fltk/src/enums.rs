@@ -9,7 +9,7 @@ use std::{
 
 /// Defines label types
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum LabelType {
     /// Normal
     Normal = 0,
@@ -25,7 +25,7 @@ pub enum LabelType {
 
 /// Defines the color depth for drawing and rgb images
 #[repr(u8)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum ColorDepth {
     /// Luminance/grayscale
     L8 = 1,
@@ -51,7 +51,7 @@ impl ColorDepth {
 
 /// Defines the frame types which can be set using the `set_frame()` and `set_down_frame()` methods
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum FrameType {
     /// No Box
     NoBox = 0,
@@ -332,7 +332,8 @@ impl Font {
     }
 
     /**
-        Load font from file
+        Load font from file.
+        Requires enabling the ttf-parser feature to get a font name back from the method, otherwise you can pass the name directly to `enums::Font::set_font`.
         ```rust,no_run
         use fltk::enums::Font;
         let font = Font::load_font("font.ttf").unwrap();
@@ -351,26 +352,20 @@ impl Font {
                 ));
             }
             if let Some(p) = path.to_str() {
-                #[allow(unused_mut)]
-                #[allow(unused_assignments)]
-                let mut family_name = Some(String::new());
-                #[cfg(feature = "ttf-parser")]
-                {
-                    let font_data = std::fs::read(path)?;
-                    let face = match ttf_parser::Face::from_slice(&font_data, 0) {
-                        Ok(f) => f,
-                        Err(_) => {
-                            return Err(FltkError::Internal(FltkErrorKind::FailedOperation));
-                        }
-                    };
-                    family_name = face
-                        .names()
-                        .into_iter()
-                        .find(|name| {
-                            name.name_id == ttf_parser::name_id::FULL_NAME && name.is_unicode()
-                        })
-                        .and_then(|name| name.to_string());
-                }
+                let font_data = std::fs::read(path)?;
+                let face = match ttf_parser::Face::parse(&font_data, 0) {
+                    Ok(f) => f,
+                    Err(_) => {
+                        return Err(FltkError::Internal(FltkErrorKind::FailedOperation));
+                    }
+                };
+                let family_name = face
+                    .names()
+                    .into_iter()
+                    .find(|name| {
+                        name.name_id == ttf_parser::name_id::FULL_NAME && name.is_unicode()
+                    })
+                    .and_then(|name| name.to_string());
                 let path = CString::safe_new(p);
                 let ret = fl::Fl_load_font(path.as_ptr());
                 if let Some(family_name) = family_name {
@@ -1021,7 +1016,7 @@ bitflags::bitflags! {
 
 /// Defines the cursor styles supported by fltk
 #[repr(i32)]
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Cursor {
     /// Default
     Default = 0,
