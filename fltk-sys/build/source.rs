@@ -30,7 +30,7 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
     println!("cargo:rerun-if-changed=cfltk/include/cfl_utils.h");
     println!("cargo:rerun-if-changed=cfltk/include/cfl_macros.h");
     println!("cargo:rerun-if-changed=cfltk/include/cfl_lock.h");
-    println!("cargo:rerun-if-changed=cfltk/include/cfl_widget.hpp");
+    println!("cargo:rerun-if-changed=cfltk/src/cfl_widget.hpp");
     println!("cargo:rerun-if-changed=cfltk/src/cfl_lock.cpp");
     println!("cargo:rerun-if-changed=cfltk/src/cfl_new.cpp");
     println!("cargo:rerun-if-changed=cfltk/src/cfl.cpp");
@@ -155,6 +155,8 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
                     dst.define("OPTION_WAYLAND_ONLY", "ON");
                 }
             }
+        } else {
+            dst.define("OPTION_USE_WAYLAND", "OFF");
         }
 
         if cfg!(feature = "single-threaded") {
@@ -185,6 +187,7 @@ pub fn build(manifest_dir: &Path, target_triple: &str, out_dir: &Path) {
             .define("CFLTK_CARGO_BUILD", "ON")
             .define("FLTK_BUILD_EXAMPLES", "OFF")
             .define("FLTK_BUILD_TEST", "OFF")
+            .define("FLTK_BUILD_FLUID", "OFF")
             .define("OPTION_LARGE_FILE", "ON")
             .define("OPTION_USE_THREADS", "ON")
             .define("OPTION_BUILD_HTML_DOCUMENTATION", "OFF")

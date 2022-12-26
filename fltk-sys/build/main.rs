@@ -1,3 +1,4 @@
+#![allow(clippy::needless_borrow)]
 use std::{env, path::PathBuf};
 
 mod android;
@@ -29,5 +30,5 @@ fn main() {
         source::build(&manifest_dir, &target_triple, &out_dir);
     }
 
-    link::link(&target_os, &out_dir);
+    link::link(&target_os, &target_triple, &out_dir);
 }

@@ -1,6 +1,42 @@
 # Changelog
 
 
+### [1.3.25] - 2022-12-25
+- Add `WidgetBase::from_dyn_widget() ad from_dyn_widget_ptr()`.
+- Add `utils::is<WidgetExt>(w) and is_ptr_of()`.
+- Add `WidgetExt::image_mut() and deimage_mut()`.
+- Mark `WidgetExt::as_widget_ptr() and ImageExt::as_image_ptr()` as safe.
+- Pull FLTK fixes.
+
+### [1.3.24] - 2022-12-15
+- Add image::IcoImage.
+- Use Fl_Widget::bind_image and bind_deimage internally.
+- Relax GlobalState callback. (Fn to FnMut)
+- Add WidgetExt::as_base_widget.
+- Pull FLTK fixes.
+
+## [1.3.23] - 2022-12-02
+- Fix docs.rs build!
+
+## [1.3.22] - 2022-12-02
+- Adds newly added Oxy scheme.
+- Add MenuExt::item_pathname.
+- Add draw_rounded_rect and draw_rounded_rectf.
+- Add app::WidgetId trait.
+- Pull FLTK fixes.
+
+## [1.3.21] - 2022-11-24
+- Impl HasRawDisplayHandle for windows.
+- Fix MenuItem::set_callback().
+- Add MenuItem::set_shortcut and set_flag.
+- Use bitflags for MenuFlag.
+
+## [1.3.20] - 2022-11-13
+- Add ColorChooser::set_tuple_rgb by @ConsoleC137.
+- Add a grabbed() check for MenuButton::clear().
+- Use FLTK's own Flex widget (newly added to FLTK).
+- Update FLTK.
+
 ## [1.3.19] - 2022-11-01
 - Add ColorChooser::set_rgb().
 - Add check in MenuExt::text() for empty menus by @purrie.

@@ -1,6 +1,6 @@
 use crate::enums::Align;
-use crate::prelude::*;
 use crate::enums::{Color, FrameType};
+use crate::prelude::*;
 use crate::utils::FlString;
 use crate::widget::Widget;
 use fltk_sys::group::*;
@@ -192,10 +192,10 @@ impl Scroll {
         unsafe { Fl_Scroll_yposition(self.inner) as i32 }
     }
 
-    /// Scrolls from `from` to `to`
-    pub fn scroll_to(&mut self, from: i32, to: i32) {
+    /// Scrolls to `x` and `y`
+    pub fn scroll_to(&mut self, x: i32, y: i32) {
         assert!(!self.was_deleted());
-        unsafe { Fl_Scroll_scroll_to(self.inner, from as i32, to as i32) }
+        unsafe { Fl_Scroll_scroll_to(self.inner, x as i32, y as i32) }
     }
 
     /// Gets the scrollbar size
@@ -433,6 +433,24 @@ impl ColorChooser {
             }
         }
     }
+
+    /// Set the base color of the ColorChooser. Returns an error on failure to change the color (wrong input)
+    pub fn set_tuple_rgb(&mut self, (r, g, b): (u8, u8, u8)) -> Result<(), FltkError> {
+        assert!(!self.was_deleted());
+        unsafe {
+            let ret = Fl_Color_Chooser_set_rgb(
+                self.inner,
+                r as f64 / 255.0,
+                g as f64 / 255.0,
+                b as f64 / 255.0,
+            );
+            if ret == 1 {
+                Ok(())
+            } else {
+                Err(FltkError::Internal(FltkErrorKind::FailedOperation))
+            }
+        }
+    }
 }
 
 crate::macros::widget::impl_widget_type!(FlexType);
@@ -479,7 +497,9 @@ crate::macros::widget::impl_widget_base!(Flex, Fl_Flex);
 crate::macros::group::impl_group_ext!(Flex, Fl_Flex);
 
 impl Flex {
-    /// Create a new Flex widget
+    /// Create a new Flex widget.
+    /// This code is here for backward compatibility with initial Fl_Flex code, which defaulted to Row instead of Column.
+    /// The behavior will be changed in fltk-rs version 2.
     fn new<T: Into<Option<&'static str>>>(
         x: i32,
         y: i32,
@@ -515,11 +535,13 @@ impl Flex {
     }
 
     fn debug_(&mut self) {
-        self.set_frame(FrameType::BorderBox);
-        if self.get_type::<FlexType>() == FlexType::Row {
-            self.set_color(Color::from_rgb(200, 0, 0));
-        } else {
-            self.set_color(Color::from_rgb(0, 0, 200));
+        if DEBUG.load(Ordering::Relaxed) {
+            self.set_frame(FrameType::BorderBox);
+            if self.get_type::<FlexType>() == FlexType::Row {
+                self.set_color(Color::from_rgb(200, 0, 0));
+            } else {
+                self.set_color(Color::from_rgb(0, 0, 200));
+            }
         }
     }
 

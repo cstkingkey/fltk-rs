@@ -1,4 +1,4 @@
-# Roadmap for version 2 (ETA mid 2022). 
+# Roadmap for version 2 (when FLTK 1.4 is released). 
 
 - Update to edition2021.
 - Rename WidgetExt::into_widget() to as_widget() and GroupExt::into_group() to as_group() to conform to Rust's self convention.
@@ -14,3 +14,5 @@
 - Refactor drawing code to use Coord and Rect.
 - Rust 1.63 constifies Mutex::new, so lazy_static can be removed.
 - Replace WindowType::Normal with WindowType::Single.
+- Default Flex to Column as is now the default in FLTK.
+- Rename Flex::set_size to fixed. 
