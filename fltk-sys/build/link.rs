@@ -177,7 +177,7 @@ pub fn link(target_os: &str, target_triple: &str, out_dir: &Path) {
                     println!("cargo:rustc-link-lib=dylib=pangocairo-1.0");
                 }
                 if target_triple.contains("gnu") || target_triple.contains("musl") {
-                    println!("cargo:rustc-link-lib=supc++");
+                     //println!("cargo:rustc-link-lib=supc++");
                 } else {
                     // assume libcxxrt is present!
                     println!("cargo:rustc-link-lib=cxxrt");
